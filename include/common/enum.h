@@ -1,6 +1,8 @@
 #ifndef ENUM_H
 #define ENUM_H
 
+#include "common/defs.h"
+
 int enumerate(char*, int, llong, int);
 
 void enumerate_bitset_precomp();

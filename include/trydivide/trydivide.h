@@ -1,7 +1,7 @@
 #ifndef TRYDIVIDE_H
 #define TRYDIVIDE_H
 
-#include "common.h"
+#include "common/defs.h"
 
 llong trydivide(llong, llong, int);
 

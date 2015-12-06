@@ -3,11 +3,9 @@
 #include <string.h> /* strncmp */
 #include <stdio.h>  /* printf */
 
-#include "atkin.h"
-#include "erath.h"
-#include "trydivide.h"
-
-sieve_func func = atkin_mt;
+#include "atkin/atkin.h"
+#include "erath/erath.h"
+#include "trydivide/trydivide.h"
 
 
 typedef struct
@@ -28,7 +26,7 @@ sieve sieves[] =
 
 sieve_func find_sieve_func(const char* name)
 {
-    sieve_func ret = func;
+    sieve_func ret = atkin_mt;
     size_t name_len = strlen(name);
     for (sieve* p = sieves; p->name != NULL; ++p)
     {

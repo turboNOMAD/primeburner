@@ -1,14 +1,18 @@
-#include "atkin.h"
-#include "atkin_q1.h"
-#include "atkin_q2.h"
-#include "atkin_q3.h"
+#include "atkin/atkin.h"
+#include "atkin/atkin_q1.h"
+#include "atkin/atkin_q2.h"
+#include "atkin/atkin_q3.h"
 
 #include <stdlib.h> /* malloc, free */
 #include <string.h> /* memset */
 #include <math.h>   /* ceil, sqrt */
 
-#include "erath.h"
-#include "bitset.h"
+#define CHUNK_WIDTH 22
+#include "common/defs.h"
+
+#include "common/enum.h"
+#include "common/presieve.h"
+#include "common/bitset.h"
 
 static inline int atkin_chunk_sieve_psquares(char* chunk, llong lower, llong upper, const char* sieved)
 {
@@ -33,7 +37,7 @@ static inline int atkin_chunk_sieve_psquares(char* chunk, llong lower, llong upp
 
 static inline int atkin_chunk(char* chunk, llong lower, llong upper, const char* sieved)
 {
-    memset(chunk, 0, ATKIN_CHUNK_BYTES);
+    memset(chunk, 0, CHUNK_BYTES);
     atkin_chunk_q1(chunk, lower, upper);
     atkin_chunk_q2(chunk, lower, upper);
     atkin_chunk_q3(chunk, lower, upper);
@@ -65,7 +69,7 @@ llong atkin(llong lower, llong upper, int print)
     erath_less_than(arr, root);
     ret = enumerate(arr + lower, root - lower, lower, print);
 
-    char* chunk = (char*)malloc(ATKIN_CHUNK_BYTES);
+    char* chunk = (char*)malloc(CHUNK_BYTES);
     if (chunk == NULL)
     {
         free(arr);
@@ -80,11 +84,11 @@ llong atkin(llong lower, llong upper, int print)
     }
 
     llong chunk_lower = (root < lower) ? lower : root;
-    llong chunk_upper = chunk_lower + ATKIN_CHUNK_SIZE ;
-    for (; chunk_upper < upper; chunk_lower += ATKIN_CHUNK_SIZE, chunk_upper += ATKIN_CHUNK_SIZE)
+    llong chunk_upper = chunk_lower + CHUNK_SIZE ;
+    for (; chunk_upper < upper; chunk_lower += CHUNK_SIZE, chunk_upper += CHUNK_SIZE)
     {
         atkin_chunk(chunk, chunk_lower, chunk_upper, arr);
-        ret += enumerator(chunk, ATKIN_CHUNK_BYTES, chunk_lower);
+        ret += enumerator(chunk, CHUNK_BYTES, chunk_lower);
     }
 
     unsigned last_chunk_bytes = ceil((upper - chunk_lower) / 8.0);
@@ -121,10 +125,10 @@ llong atkin_mt(llong lower, llong upper, int print)
 
     llong i, first_chunk_start = (root < lower) ? lower : root; 
     #pragma omp parallel for ordered, schedule(dynamic)
-    for (i = first_chunk_start; i < upper; i += ATKIN_CHUNK_SIZE)
+    for (i = first_chunk_start; i < upper; i += CHUNK_SIZE)
     {
-        char* chunk = malloc(ATKIN_CHUNK_BYTES);
-        llong chunk_size = ATKIN_CHUNK_SIZE;
+        char* chunk = malloc(CHUNK_BYTES);
+        llong chunk_size = CHUNK_SIZE;
         if ((i + chunk_size) > upper)
         {
             chunk_size = upper - i;
@@ -132,7 +136,7 @@ llong atkin_mt(llong lower, llong upper, int print)
         atkin_chunk(chunk, i, i + chunk_size, arr);
 
         #pragma omp ordered
-        ret += enumerator(chunk, ATKIN_CHUNK_BYTES, i);
+        ret += enumerator(chunk, CHUNK_BYTES, i);
 
         free(chunk);
     }

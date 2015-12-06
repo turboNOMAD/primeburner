@@ -1,7 +1,7 @@
 #ifndef ATKIN_Q1_H
 #define ATKIN_Q1_h
 
-#include "common.h"
+#include "common/defs.h"
 
 /* Flip numbers that are solutions to Atkin 1st quadratic form: */
 /* 4x^2 + y^2 = n */

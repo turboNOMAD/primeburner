@@ -1,8 +1,8 @@
-#include "atkin_q3.h"
+#include "atkin/atkin_q3.h"
 
 #include <math.h> /* sqrt */
 
-#include "bitset.h"
+#include "common/bitset.h"
 
 /* Apply to 11,23,47,59 mod 60 */
 static char atkin_q3_filter[60] =

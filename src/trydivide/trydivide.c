@@ -1,4 +1,4 @@
-#include "trydivide.h"
+#include "trydivide/trydivide.h"
 
 #include <stdio.h> /* printf */
 

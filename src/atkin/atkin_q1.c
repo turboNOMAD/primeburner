@@ -1,8 +1,8 @@
-#include "atkin_q1.h"
+#include "atkin/atkin_q1.h"
 
 #include <math.h> /* ceil, sqrt */
 
-#include "bitset.h"
+#include "common/bitset.h"
 
 /* Apply to 1, 13, 17, 29, 37, 41, 49, 53 mod 60 */
 static char atkin_q1_filter[60] =

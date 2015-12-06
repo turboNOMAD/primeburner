@@ -7,9 +7,8 @@
 int print = 1;
 llong lower = 2;
 llong upper = 1000000000;
-extern sieve_func func;
 
-void print_help()
+static void print_help()
 {
     printf("Usage: primesieve [-q] [-l N] [-u N] [-m METHOD]\n" \
            "Generate all prime numbers in the range [lower, upper)\n" \
@@ -29,7 +28,7 @@ void print_help()
     enum_sieve_funcs();
 }
 
-void parse_cmdline(int argc, char* argv[])
+static void parse_cmdline(int argc, char* argv[], sieve_func* func)
 {
     int opt;
     extern char *optarg;
@@ -38,6 +37,7 @@ void parse_cmdline(int argc, char* argv[])
         {"help", 0, NULL, 'h'},
         {0}
     };
+    const char* sieve_func_name = "";
 
     while ((opt = getopt_long(argc, argv, "hql:u:m:", longopts, NULL)) != -1)
     {
@@ -56,13 +56,15 @@ void parse_cmdline(int argc, char* argv[])
             upper = atoll(optarg);
             break;
         case 'm':
-            func = find_sieve_func(optarg);
+            sieve_func_name = optarg;
             break;
         }
     }
+
+    *func = find_sieve_func(sieve_func_name);
 }
 
-int check_args()
+static int check_args()
 {
     if (lower < 2)
     {
@@ -81,7 +83,8 @@ int check_args()
 
 int main(int argc, char* argv[])
 {
-    parse_cmdline(argc, argv);
+    sieve_func func = NULL;
+    parse_cmdline(argc, argv, &func);
 
     if (!check_args())
     {

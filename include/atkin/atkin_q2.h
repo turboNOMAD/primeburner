@@ -1,7 +1,7 @@
 #ifndef ATKIN_Q2_H
 #define ATKIN_Q2_h
 
-#include "common.h"
+#include "common/defs.h"
 
 /* Flip numbers that are solutions to Atkin 2nd quadratic form: */
 /* 3x^2 + y^2 = n */

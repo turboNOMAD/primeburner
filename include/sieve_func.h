@@ -1,7 +1,7 @@
 #ifndef SIEVE_FUNC_H
 #define SIEVE_FUNC_H
 
-#include "common.h"
+#include "common/defs.h"
 
 typedef llong (*sieve_func)(llong, llong, int);
 

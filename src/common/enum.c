@@ -1,8 +1,8 @@
-#include "common.h"
+#include "common/enum.h"
 
 #include <stdio.h> /* printf */
 
-#include "bitset.h"
+#include "common/bitset.h"
 
 static char bitset_counters[1 << 8];
 

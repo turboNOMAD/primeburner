@@ -4,8 +4,8 @@ PROJECT(primeburner)
 
 INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include)
 
-file(GLOB SOURCE_FILES
-     "src/*.c"
+file(GLOB_RECURSE SOURCE_FILES
+     "src/*"
 )
 
 SET(CMAKE_C_FLAGS "-march=native -mtune=native -O2 -std=c99 -Wall -Wextra -flto")
