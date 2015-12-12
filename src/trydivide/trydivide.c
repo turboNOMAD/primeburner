@@ -29,7 +29,7 @@ llong trydivide(llong lower, llong upper, int print)
 
             if (print)
             {
-                printf("%llu\n", p);
+                printf("%lu\n", p);
             }
         }
     }

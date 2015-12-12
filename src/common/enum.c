@@ -34,7 +34,7 @@ int enumerate(char* arr, int len, llong offset, int print)
             ++ret;
             if (print)
             {
-                printf("%llu\n", i + offset);
+                printf("%lu\n", i + offset);
             }
         }
     }
@@ -67,7 +67,7 @@ int enumerate_bitset_print(char* arr, unsigned len, llong offset)
         if (bitset_get(arr, i) != 0)
         {
             ++ret;
-            printf("%llu\n", i + offset);
+            printf("%lu\n", i + offset);
         }
     }
 

@@ -1,0 +1,103 @@
+#include "erath/erath2.h"
+
+#include <stdlib.h> /* malloc, free */
+#include <string.h> /* memset */
+#include <math.h>   /* ceil, sqrt */
+
+#define CHUNK_WIDTH 18
+#include "common/defs.h"
+
+#include "common/enum.h"
+#include "common/presieve.h"
+#include "common/bitset.h"
+
+static inline int erath2_chunk_sieve_small(char* chunk, bucket_list* list)
+{
+    llong chunk_size = list->chunk_size;
+    bucket b = list->small;
+    presieved_prime* end_marker = b.end;
+
+    for (presieved_prime* pp = b.begin; pp < end_marker; ++pp)
+    {
+        llong i = pp->offset;
+        uint32_t p = pp->p;
+        for (; i < chunk_size; i += p)
+        {
+            bitset_clear(chunk, i);
+        }
+        pp->offset = i - chunk_size;
+    }
+
+    return 0;
+}
+
+static inline int erath2_chunk(char* chunk, bucket_list* list, uint32_t bucket_index)
+{
+    llong chunk_size = list->chunk_size;
+    bucket* b = list->buckets + bucket_index;
+    presieved_prime* end_marker = b->end;
+
+    for (presieved_prime* pp = b->begin; pp < end_marker; ++pp)
+    {
+        llong i = pp->offset;
+        uint32_t p = pp->p;
+        for (; i < chunk_size; i += p)
+        {
+            bitset_clear(chunk, i);
+        }
+        bucket_list_put(list, p, i, bucket_index);
+    }
+    bucket_list_release_bucket(b);
+
+    return 0;
+}
+
+llong erath2(llong lower, llong upper, int print)
+{
+    llong ret = 0;
+
+    enumerate_bitset_precomp();
+
+    bucket_list* list = NULL;
+
+    ret = presieve(&lower, upper, &list, CHUNK_SIZE, print);
+    if (list == NULL)
+    {
+        return ret;
+    }
+
+    char* chunk = (char*)malloc(CHUNK_BYTES);
+    if (chunk == NULL)
+    {
+        bucket_list_destroy(list);
+        
+        return 0;
+    }
+
+    bitset_enum_func enumerator = enumerate_bitset;
+    if (print != 0)
+    {
+        enumerator = enumerate_bitset_print;
+    }
+
+    for (llong chunk_lower = lower; chunk_lower < upper; chunk_lower += CHUNK_SIZE)
+    {
+        memset(chunk, 0xFF, CHUNK_BYTES);
+        erath2_chunk_sieve_small(chunk, list);
+        uint32_t bucket_index = bucket_list_get_bucket(list);
+        erath2_chunk(chunk, list, bucket_index);
+        unsigned chunk_bytes = CHUNK_BYTES;
+        if (chunk_lower + CHUNK_SIZE > upper)
+        {
+            chunk_bytes = ceil((upper - chunk_lower) / 8.0);
+            bitset_truncate(chunk, upper - chunk_lower - 1);
+        }
+        ret += enumerator(chunk, chunk_bytes, chunk_lower);
+    }
+
+    free(chunk);
+    bucket_list_destroy(list);
+
+    return ret;
+}
+

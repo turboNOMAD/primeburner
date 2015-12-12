@@ -1,6 +1,6 @@
 #include <stdio.h>  /* printf */
 #include <getopt.h> /* getopt_long */
-#include <stdlib.h> /* exit, atoll */
+#include <stdlib.h> /* exit, atol */
 
 #include "sieve_func.h"
 
@@ -10,7 +10,7 @@ llong upper = 1000000000;
 
 static void print_help()
 {
-    printf("Usage: primesieve [-q] [-l N] [-u N] [-m METHOD]\n" \
+    printf("Usage: primeburner [-q] [-l N] [-u N] [-m METHOD]\n" \
            "Generate all prime numbers in the range [lower, upper)\n" \
            "using a selected method, and print them to standard output.\n" \
            "\n" \
@@ -50,10 +50,10 @@ static void parse_cmdline(int argc, char* argv[], sieve_func* func)
             print = 0;
             break;
         case 'l':
-            lower = atoll(optarg);
+            lower = atol(optarg);
             break;
         case 'u':
-            upper = atoll(optarg);
+            upper = atol(optarg);
             break;
         case 'm':
             sieve_func_name = optarg;
@@ -68,13 +68,13 @@ static int check_args()
 {
     if (lower < 2)
     {
-        printf("Invalid lower bound = %lld specified!\n", lower);
+        printf("Invalid lower bound = %ld specified!\n", lower);
         return 0;
     }
 
     if (upper < lower)
     {
-        printf("Upper bound below lower! (%lld > %lld)\n", lower, upper);
+        printf("Upper bound below lower! (%ld > %ld)\n", lower, upper);
         return 0;
     }
 
@@ -95,7 +95,7 @@ int main(int argc, char* argv[])
 
     if (res > 0)
     {
-        printf("%llu primes found.\n", res);
+        printf("%lu primes found.\n", res);
     }
     else
     {

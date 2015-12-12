@@ -4,7 +4,8 @@
 #include <stdio.h>  /* printf */
 
 #include "atkin/atkin.h"
-#include "erath/erath.h"
+#include "erath/erath1.h"
+#include "erath/erath2.h"
 #include "trydivide/trydivide.h"
 
 
@@ -18,8 +19,9 @@ sieve sieves[] =
 {
     { "atkin", atkin },
     { "atkin_mt", atkin_mt },
-    { "erath", erath },
-    { "erath_mt", erath_mt },
+    { "erath1", erath1 },
+    { "erath1_mt", erath1_mt },
+    { "erath2", erath2 },
     { "trydivide", trydivide },
     { NULL, NULL }
 };

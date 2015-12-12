@@ -1,4 +1,4 @@
-#include "erath/erath.h"
+#include "erath/erath1.h"
 
 #include <stdlib.h> /* malloc, free */
 #include <string.h> /* memset */
@@ -11,7 +11,7 @@
 #include "common/presieve.h"
 #include "common/bitset.h"
 
-static inline int erath_chunk(char* chunk, llong lower, llong upper, const char* sieved)
+static inline int erath1_chunk(char* chunk, llong lower, llong upper, const char* sieved)
 {
     const llong chunk_size = upper - lower;
 
@@ -32,7 +32,7 @@ static inline int erath_chunk(char* chunk, llong lower, llong upper, const char*
     return 0;
 }
 
-llong erath(llong lower, llong upper, int print)
+llong erath1(llong lower, llong upper, int print)
 {
     llong ret = 0;
     llong root = ceil(sqrt(upper));
@@ -66,12 +66,12 @@ llong erath(llong lower, llong upper, int print)
     llong chunk_upper = chunk_lower + CHUNK_SIZE;
     for (; chunk_upper < upper; chunk_lower += CHUNK_SIZE, chunk_upper += CHUNK_SIZE)
     {
-        erath_chunk(chunk, chunk_lower, chunk_upper, arr);
+        erath1_chunk(chunk, chunk_lower, chunk_upper, arr);
         ret += enumerator(chunk, CHUNK_BYTES, chunk_lower);
     }
 
     unsigned last_chunk_bytes = ceil((upper - chunk_lower) / 8.0);
-    erath_chunk(chunk, chunk_lower, upper, arr);
+    erath1_chunk(chunk, chunk_lower, upper, arr);
     bitset_truncate(chunk, upper - chunk_lower - 1);
     ret += enumerator(chunk, last_chunk_bytes, chunk_lower);
 
@@ -81,7 +81,7 @@ llong erath(llong lower, llong upper, int print)
     return ret;
 }
 
-llong erath_mt(llong lower, llong upper, int print)
+llong erath1_mt(llong lower, llong upper, int print)
 {
     llong ret = 0;
     llong root = ceil(sqrt(upper));
@@ -115,7 +115,7 @@ llong erath_mt(llong lower, llong upper, int print)
             chunk_size = upper - i;
             chunk_bytes = ceil(chunk_size / 8.0);
         }
-        erath_chunk(chunk, i, i + chunk_size, arr);
+        erath1_chunk(chunk, i, i + chunk_size, arr);
         if ((chunk_size & 7) != 0)
         {
             bitset_truncate(chunk, chunk_size);
