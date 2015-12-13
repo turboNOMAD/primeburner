@@ -3,7 +3,7 @@
 
 #include "common/defs.h"
 
-int enumerate(char*, int, llong, int);
+int enumerate(char*, char*, llong, int);
 
 void enumerate_bitset_precomp();
 

@@ -23,18 +23,18 @@ void enumerate_bitset_precomp()
     }
 }
 
-int enumerate(char* arr, int len, llong offset, int print)
+int enumerate(char* start, char* end, llong offset, int print)
 {
     int ret = 0;
 
-    for (int i = 0; i < len; ++i)
+    for (char* p = start; p < end; ++p)
     {
-        if (arr[i] != 0)
+        if (*p != 0)
         {
             ++ret;
             if (print)
             {
-                printf("%lu\n", i + offset);
+                printf("%lu\n", p - start + offset);
             }
         }
     }

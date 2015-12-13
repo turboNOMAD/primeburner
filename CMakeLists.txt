@@ -8,8 +8,16 @@ file(GLOB_RECURSE SOURCE_FILES
      "src/*"
 )
 
-SET(CMAKE_C_FLAGS "-march=native -mtune=native -O2 -std=c99 -Wall -Wextra -flto")
-SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -flto -fwhole-program")
+IF(NOT CMAKE_BUILD_TYPE)
+    SET(CMAKE_BUILD_TYPE "Release")
+ENDIF(NOT CMAKE_BUILD_TYPE)
+
+SET(CMAKE_C_FLAGS "-std=c99 -Wall -Wextra")
+
+SET(CMAKE_C_FLAGS_DEBUG "-O -g")
+
+SET(CMAKE_C_FLAGS_RELEASE "-march=native -mtune=native -O2 -flto")
+SET(CMAKE_EXE_LINKER_FLAGS_RELEASE "${CMAKE_EXE_LINKER_FLAGS} -flto -fwhole-program")
 
 FIND_PACKAGE(OpenMP)
 IF(OPENMP_FOUND)

@@ -67,7 +67,7 @@ llong atkin(llong lower, llong upper, int print)
     atkin_precomp();
 
     erath_less_than(arr, root);
-    ret = enumerate(arr + lower, root - lower, lower, print);
+    ret = enumerate(arr + lower, arr + root, lower, print);
 
     char* chunk = (char*)malloc(CHUNK_BYTES);
     if (chunk == NULL)
@@ -115,7 +115,7 @@ llong atkin_mt(llong lower, llong upper, int print)
     atkin_precomp();
 
     erath_less_than(arr, root);
-    ret = enumerate(arr + lower, root - lower, lower, print);
+    ret = enumerate(arr + lower, arr + root, lower, print);
 
     bitset_enum_func enumerator = enumerate_bitset;
     if (print != 0)

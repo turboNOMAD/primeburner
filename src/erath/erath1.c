@@ -46,7 +46,7 @@ llong erath1(llong lower, llong upper, int print)
 
     erath_less_than(arr, root);
 
-    ret = enumerate(arr + lower, root - lower, lower, print);
+    ret = enumerate(arr + lower, arr + root, lower, print);
 
     char* chunk = (char*)malloc(CHUNK_BYTES);
     if (chunk == NULL)
@@ -95,7 +95,7 @@ llong erath1_mt(llong lower, llong upper, int print)
 
     erath_less_than(arr, root);
 
-    ret = enumerate(arr + lower, root - lower, lower, print);
+    ret = enumerate(arr + lower, arr + root, lower, print);
 
     bitset_enum_func enumerator = enumerate_bitset;
     if (print != 0)

@@ -37,15 +37,22 @@ llong presieve(llong* lower, llong upper, bucket_list** list, uint32_t chunk_siz
     }
 
     erath_less_than(arr, root);
-    int count = enumerate(arr, root, 0, 0);
+    int count = enumerate(arr, arr + root, 0, 0);
     *list = bucket_list_create(root, chunk_size, count);
     if (*list == 0)
     {
         return ret;
     }
-    ret = enumerate(arr + *lower, root - *lower, *lower, print);
-    llong newlower = (root < *lower) ? *lower : root;
-    *lower = newlower;
+
+    llong oldlower = *lower;
+    llong newlower = *lower;
+    if (oldlower < root)
+    {
+        newlower = root;
+        ret = enumerate(arr + oldlower, arr + root, oldlower, print);
+        *lower = newlower;
+    }
+
     bucket_list_initial_fill(*list, arr, root, newlower);
 
     free(arr);
