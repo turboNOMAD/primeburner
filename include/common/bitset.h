@@ -31,7 +31,7 @@ inline void bitset_clear(char* bitset, llong pos)
 
 inline void bitset_truncate(char* bitset, llong size)
 {
-    const char bitmask = (1 << (size & 7)) - 1;
+    const char bitmask = (1 << ((size & 7) + 1)) - 1;
 
     bitset[size >> 3] &= bitmask;
 }

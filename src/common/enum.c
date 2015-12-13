@@ -42,6 +42,9 @@ int enumerate(char* arr, int len, llong offset, int print)
     return ret;
 }
 
+/* Simple enumeration does not need to know chunk offset */
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 int enumerate_bitset(char* arr, unsigned len, llong offset)
 {
     int ret = 0;
@@ -52,10 +55,10 @@ int enumerate_bitset(char* arr, unsigned len, llong offset)
         unsigned char cur_byte = *p;
         ret += bitset_counters[cur_byte];
     }
-    offset = offset; /* Just to get rid of "unused parameter" warning */
 
     return ret;
 }
+#pragma GCC diagnostic pop
 
 int enumerate_bitset_print(char* arr, unsigned len, llong offset)
 {
