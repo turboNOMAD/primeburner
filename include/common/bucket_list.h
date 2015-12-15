@@ -16,12 +16,13 @@ typedef struct
     uint32_t current;
     uint32_t last;
     uint32_t chunk_size;
+
+    char* presieved_primes;
+    uint32_t max_presieved;
 } bucket_list;
 
 bucket_list* bucket_list_create(llong, uint32_t, uint32_t);
 void bucket_list_destroy(bucket_list*);
-
-void bucket_list_initial_fill(bucket_list*, const char*, uint32_t, llong);
 
 inline void bucket_list_put(bucket_list* list, uint32_t p, llong offset, uint32_t index)
 {

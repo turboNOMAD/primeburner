@@ -11,6 +11,8 @@ typedef struct
     uint32_t offset;
 } __attribute__((packed)) presieved_prime;
 
+#define SMALL_PRIMES_END 0xFFFFFFFF
+
 #define CHUNK_SIZE (1L << (CHUNK_WIDTH))
 #define CHUNK_BYTES (1L << ((CHUNK_WIDTH) - 3))
 

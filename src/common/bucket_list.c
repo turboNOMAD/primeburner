@@ -65,7 +65,7 @@ bucket_list* bucket_list_create(llong prime_cutoff, uint32_t chunk_size, uint32_
         return ret;
     }
 
-    if (!bucket_create(&ret->small, bucket_capacity))
+    if (!bucket_create(&ret->small, bucket_capacity + 1))
     {
         free(ret);
         ret = NULL;
@@ -81,6 +81,7 @@ bucket_list* bucket_list_create(llong prime_cutoff, uint32_t chunk_size, uint32_
     ret->current = 0;
     ret->last = count - 1;
     ret->chunk_size = chunk_size;
+    ret->presieved_primes = NULL;
 
     if (!buckets_create(&(ret->buckets), count, bucket_capacity))
     {
@@ -93,41 +94,12 @@ bucket_list* bucket_list_create(llong prime_cutoff, uint32_t chunk_size, uint32_
 
 void bucket_list_destroy(bucket_list* list)
 {
+    bucket_destroy(&list->small);
     buckets_destroy(list->buckets, list->last + 1);
-    free(list);
-}
-
-void bucket_list_initial_fill(bucket_list* list, const char* arr, uint32_t count, llong lower)
-{
-    uint32_t max_small_prime = list->chunk_size;
-
-    for (uint32_t p = 0; p < count; ++p)
+    if (list->presieved_primes != NULL)
     {
-        if (arr[p] == 0)
-        {
-            continue;
-        }
-
-        llong k = 2;
-        if ((p * k) < lower)
-        {
-            k = lower / p;
-            if ((p * k) < lower)
-            {
-                ++k;
-            }
-        }
-        llong offset = p * k - lower;
-
-        if (p <= max_small_prime)
-        {
-            presieved_prime pp = {p, offset};
-            *(list->small.end++) = pp;
-        }
-        else
-        {
-            bucket_list_put(list, p, offset, 0);
-        }
+        free(list->presieved_primes);
     }
+    free(list);
 }
 
