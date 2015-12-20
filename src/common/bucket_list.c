@@ -82,6 +82,7 @@ bucket_list* bucket_list_create(llong prime_cutoff, uint32_t chunk_size, uint32_
     ret->last = count - 1;
     ret->chunk_size = chunk_size;
     ret->presieved_primes = NULL;
+    ret->presieved_threshold = 0;
 
     if (!buckets_create(&(ret->buckets), count, bucket_capacity))
     {

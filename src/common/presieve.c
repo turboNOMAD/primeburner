@@ -16,7 +16,7 @@ int erath_less_than(char* arr, llong upper)
     {
         if (arr[p] != 0)
         {
-            for (llong i = p * 2; i < upper; i += p)
+            for (llong i = p * p; i < upper; i += p)
             {
                 arr[i] = 0;
             }
@@ -63,7 +63,7 @@ static void presieve_small_primes(bucket_list* list, char* arr, uint32_t count, 
         *(list->small.end++) = pp;
     }
     list->presieved_primes = arr;
-    list->max_presieved = p - 1;
+    list->presieved_threshold = p;
 
     presieved_prime pp = {SMALL_PRIMES_END, 0};
     *(list->small.end++) = pp;
@@ -72,7 +72,7 @@ static void presieve_small_primes(bucket_list* list, char* arr, uint32_t count, 
 void presieve_large_primes(bucket_list* list, uint32_t bucket_index, uint32_t maximum, llong lower)
 {
     char* arr = list->presieved_primes;
-    uint32_t p = list->max_presieved;
+    uint32_t p = list->presieved_threshold;
     for(; p < maximum; ++p)
     {
         if (arr[p] == 0)
@@ -82,7 +82,7 @@ void presieve_large_primes(bucket_list* list, uint32_t bucket_index, uint32_t ma
 
         bucket_list_put(list, p, calc_offset(p, lower), bucket_index);
     }
-    list->max_presieved = p - 1;
+    list->presieved_threshold = p;
 }
 
 llong presieve(llong* lower, llong upper, bucket_list** list, uint32_t chunk_size, int print)

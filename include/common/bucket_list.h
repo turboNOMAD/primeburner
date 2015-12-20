@@ -18,7 +18,7 @@ typedef struct
     uint32_t chunk_size;
 
     char* presieved_primes;
-    uint32_t max_presieved;
+    uint32_t presieved_threshold;
 } bucket_list;
 
 bucket_list* bucket_list_create(llong, uint32_t, uint32_t);
