@@ -1,5 +1,5 @@
 #include <stdio.h>  /* printf */
-#include <getopt.h> /* getopt_long */
+#include <getopt.h> /* getopt_long, optarg */
 #include <stdlib.h> /* exit, atol */
 
 #include "sieve_func.h"
@@ -31,7 +31,6 @@ static void print_help()
 static void parse_cmdline(int argc, char* argv[], sieve_func* func)
 {
     int opt;
-    extern char *optarg;
     struct option longopts[] =
     {
         {"help", 0, NULL, 'h'},

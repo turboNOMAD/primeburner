@@ -31,7 +31,6 @@ static inline uint32_t erath2_chunk_sieve_small(char* chunk, bucket_list* list, 
 
 static inline void erath2_chunk(char* chunk, bucket_list* list, uint32_t bucket_index)
 {
-    llong chunk_size = list->chunk_size;
     bucket* b = list->buckets + bucket_index;
     presieved_prime* end_marker = b->end;
 
@@ -39,11 +38,8 @@ static inline void erath2_chunk(char* chunk, bucket_list* list, uint32_t bucket_
     {
         llong i = pp->offset;
         uint32_t p = pp->p;
-        for (; i < chunk_size; i += p)
-        {
-            bitset_clear(chunk, i);
-        }
-        bucket_list_put(list, p, i, bucket_index);
+        bitset_clear(chunk, i);
+        bucket_list_put(list, p, i + p, bucket_index);
     }
     bucket_list_release_bucket(b);
 }
